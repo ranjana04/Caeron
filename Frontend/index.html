@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Caeron - Health & Care</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Leaflet CSS -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+/>
+
+<!-- Leaflet JS -->
+<script
+  src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js">
+</script>
+ 
+</head>
+
+<body>
+
+  <header>
+    <div class="logo-container" title="Caeron - Health & Care">
+      <svg class="logo-svg" viewBox="0 0 64 64" aria-hidden="true">
+        <!-- Simple hexagon as a modern symbol -->
+        <polygon points="32 4 56 16 56 48 32 60 8 48 8 16" stroke-linejoin="round" />
+        <line x1="32" y1="12" x2="32" y2="52" />
+        <line x1="20" y1="32" x2="44" y2="32" />
+      </svg>
+      <h1 class="logo-text">Caeron</h1>
+    </div>
+    <nav>
+      <a href="#" class="nav-link" onclick="showPage('home')">
+  <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+  </svg>
+  Home
+</a>
+      <a href="#" class="nav-link" onclick="showPage('register')">
+        <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="7" r="4" />
+          <path d="M5.5 21h13a2 2 0 0 0-2-2h-9a2 2 0 0 0-2 2z" />
+        </svg>
+        Register
+      </a>
+      <a href="#" class="nav-link" onclick="showPage('search')">
+        <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        Search
+      </a>
+      <a href="#" class="nav-link" onclick="showPage('appointment')">
+        <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+        </svg>
+        Appointment
+      </a>
+      <a href="#" class="nav-link" onclick="showPage('medicine')">
+        <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="6" y="10" width="12" height="6" rx="2" />
+          <line x1="12" y1="10" x2="12" y2="16" />
+        </svg>
+        Medicine
+      </a>
+      <a href="#" class="nav-link" onclick="showPage('ambulance')">
+        <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="1" y="7" width="15" height="13" rx="2" ry="2" />
+          <circle cx="18" cy="18" r="3" />
+          <line x1="18" y1="9" x2="23" y2="9" />
+          <line x1="5" y1="10" x2="5" y2="14" />
+        </svg>
+        Ambulance
+      </a>
+      <a href="#" class="nav-link" onclick="showPage('help')">
+        <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M9.09 9a3 3 0 1 1 5.83 1c0 2-3 3-3 3" />
+          <line x1="12" y1="17" x2="12" y2="17" />
+        </svg>
+        Help
+      </a>
+      
+      <a href="#" class="nav-link" id="authBtn" onclick="openAuthModal()">Login/Signup</a>
+<a href="#" class="nav-link" id="logoutBtn" style="display: none;" onclick="logoutUser()">Logout</a>
+
+
+      <button class="toggle-btn" onclick="toggleDarkMode()" aria-label="Toggle Dark Mode">🌓</button>
+    </nav>
+  </header>
+
+ <div id="authModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeAuthModal()">&times;</span>
+    <h3 id="authTitle">Login</h3>
+
+    <!-- Login Form -->
+    <form id="userLoginForm" onsubmit="loginUser(event)">
+      <input type="email" id="userEmail" placeholder="Email" required />
+      <input type="password" id="userPassword" placeholder="Password" required />
+      <button type="submit">Login</button>
+      <p class="switch-link">Don't have an account? <a onclick="toggleForm('signup')">Sign up</a></p>
+    </form>
+
+    <!-- Signup Form -->
+    <form id="userSignupForm" style="display: none;" onsubmit="signupUser(event)">
+      <input type="text" id="signupName" placeholder="Name" required />
+      <input type="email" id="signupEmail" placeholder="Email" required />
+      <input type="password" id="signupPassword" placeholder="Password" required />
+      <button type="submit">Sign Up</button>
+      <p class="switch-link">Already have an account? <a onclick="toggleForm('login')">Login</a></p>
+    </form>
+  </div>
+</div>
+
+
+   <!-- Home page -->
+   <section id="home" class="page home-full active" aria-label="Home page">
+  <section class="hero">
+    <div class="hero-content" data-aos="fade-right">
+      <h2>Book Medical Appointments Easily</h2>
+      <p>Connect with top doctors online, skip the queues, and take control of your healthcare in minutes.</p>
+      <div class="buttons">
+      <button id="homeSignupBtn" class="signup-btn" onclick="openAuthModal('signup')">Sign Up</button>
+      <button id="homeSigninBtn" class="signin-btn" onclick="openAuthModal('login')">Sign In</button>
+      </div>
+    </div>
+    <div class="hero-img" data-aos="fade-left">
+      <img src="https://img.freepik.com/free-photo/doctor-with-stethoscope-hospital_23-2148827741.jpg?w=740" alt="Doctor">
+    </div>
+  </section>
+
+  <section class="info-section">
+    <div class="info-card" data-aos="fade-up">
+      <img src="https://cdn-icons-png.flaticon.com/512/387/387561.png" alt="Appointments">
+      <div>
+        <h3>Instant Appointments</h3>
+        <p>Schedule visits with verified specialists quickly and securely.</p>
+      </div>
+    </div>
+    <div class="info-card" data-aos="fade-up" data-aos-delay="100">
+      <img src="https://cdn-icons-png.flaticon.com/512/3208/3208722.png" alt="Care">
+      <div>
+        <h3>Trusted Healthcare</h3>
+        <p>Access premium services from top-rated clinics and hospitals.</p>
+      </div>
+    </div>
+  </section>
+  
+  <footer>
+    © 2025 Caeron. All rights reserved.
+  </footer>
+    
+  </section>
+
+
+  <!-- Register Page -->
+  <section id="register" class="page active" aria-label="Register page">
+    <div class="page-header">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="7" r="4" />
+        <path d="M5.5 21h13a2 2 0 0 0-2-2h-9a2 2 0 0 0-2 2z" />
+      </svg>
+      <h2>Register as Doctor or Hospital</h2>
+    </div>
+    <form id="registerForm">
+      <label for="role">Role:</label>
+      <select id="role" name="role" required>
+        <option value="" disabled selected>Select role</option>
+        <option value="doctor">Doctor</option>
+        <option value="hospital">Hospital</option>
+      </select>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" placeholder="Your name or hospital name" required />
+      <label for="speciality">Speciality (Doctors only):</label>
+      <input type="text" id="speciality" name="speciality" placeholder="E.g. Cardiologist" />
+      <label for="location">Location (City or Address):</label>
+      <input type="text" id="location" name="location" placeholder="City or address" required />
+      <button type="submit">Register</button>
+    </form>
+  </section>
+
+  <!-- Search Page -->
+  <section id="search" class="page" aria-label="Search page">
+    <div class="page-header">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+      </svg>
+      <h2>Search Nearby Doctors & Hospitals</h2>
+    </div>
+    <input type="text" id="searchLocation" placeholder="Enter your location" />
+<button id="searchBtn">Search</button>
+<div id="map" style="height: 400px; width: 100%; margin-top: 20px;"></div>
+<ul class="doctor-list" id="doctorList"></ul>
+  </section>
+
+  <!-- Appointment Page -->
+  <section id="appointment" class="page" aria-label="Appointment page">
+    <div class="page-header">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+        <line x1="16" y1="2" x2="16" y2="6" />
+        <line x1="8" y1="2" x2="8" y2="6" />
+        <line x1="3" y1="10" x2="21" y2="10" />
+      </svg>
+      <h2>Book Appointment</h2>
+    </div>
+    <form id="appointmentForm">
+      <label for="appointmentName">Full Name:</label>
+      <input type="text" id="appointmentName" name="appointmentName" required />
+      <label for="appointmentDoctor">Select Doctor/Hospital:</label>
+      <select id="appointmentDoctor" required></select>
+      <label for="appointmentDate">Date & Time:</label>
+      <input type="datetime-local" id="appointmentDate" name="appointmentDate" required />
+      <button type="submit">Book Appointment</button>
+    </form>
+  </section>
+
+  <!-- Medicine Page -->
+  <section id="medicine" class="page" aria-label="Medicine page">
+    <div class="page-header">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="6" y="10" width="12" height="6" rx="2" />
+        <line x1="12" y1="10" x2="12" y2="16" />
+      </svg>
+      <h2>Order Medicines</h2>
+    </div>
+    <form id="medicineForm">
+  <label for="medicineName">Medicine Name:</label>
+  <input type="text" id="medicineName" name="medicineName" required />
+
+  <label for="quantity">Quantity:</label>
+  <input type="number" id="quantity" name="quantity" required />
+
+  <label for="address">Address:</label>
+  <input type="text" id="address" name="address" required />
+
+  <label for="prescriptionUpload">Upload Prescription (optional):</label>
+  <input type="file" id="prescriptionUpload" name="prescriptionUpload" accept="image/*,application/pdf" />
+
+  <button type="submit">Order Medicine</button>
+</form>
+
+
+  </section>
+
+  <!-- Ambulance Page -->
+  <section id="ambulance" class="page" aria-label="Ambulance page">
+    <div class="page-header">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="1" y="7" width="15" height="13" rx="2" ry="2" />
+        <circle cx="18" cy="18" r="3" />
+        <line x1="18" y1="9" x2="23" y2="9" />
+        <line x1="5" y1="10" x2="5" y2="14" />
+      </svg>
+      <h2>Emergency Ambulance</h2>
+    </div>
+    <form id="ambulanceForm">
+  <label for="ambulanceName">Emergency Details (Your Name or Description):</label>
+  <input type="text" id="ambulanceName" name="ambulanceName" required />
+
+  <label for="ambulanceLocation">Pickup Location:</label>
+  <input type="text" id="ambulanceLocation" name="ambulanceLocation" required />
+
+  <label for="contactNumber">Contact Number:</label>
+  <input type="tel" id="contactNumber" name="contactNumber" required />
+
+  <button type="submit">Call Ambulance</button>
+</form>
+
+  </section>
+
+  <!-- Help Page -->
+  <section id="help" class="page" aria-label="Help page">
+    <div class="page-header">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M9.09 9a3 3 0 1 1 5.83 1c0 2-3 3-3 3" />
+        <line x1="12" y1="17" x2="12" y2="17" />
+      </svg>
+      <h2>Help & Support</h2>
+    </div>
+    <p>If you have any questions or need support, please contact us at <a
+        href="mailto:support@caeron.com">support@caeron.com</a> or call <strong>+1-800-CAERON</strong>.</p>
+    <p>We are here to assist you 24/7.</p>
+  </section>
+  <script src="script.js"></script>
+</body>
+
+</html>
